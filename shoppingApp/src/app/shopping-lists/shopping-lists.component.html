@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            Listy zakupów
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <ion-item>
+        <ion-input type="text" [(ngModel)]="listName" placeholder="Dodaj nową listę"></ion-input>
+        <div item-end>
+            <ion-button (click)="addNewShoppingList()">
+                Dodaj
+            </ion-button>
+        </div>
+    </ion-item>
+
+    <div class="ion-padding">
+        <ion-list *ngIf="shoppingLists.length>0; else elseBlock">
+            <ion-item *ngFor="let shoppingList of shoppingLists; let i = index">
+                <div [style.text-decoration-line]="shoppingList.completed ? 'line-through' : 'none'" (click)="navigateToSingleList(shoppingList)">{{shoppingList.name}}</div>
+                <div class="item-note" slot="end">
+                    <ion-button (click)="toggleComplete(i)">
+                        <ion-icon name="{{shoppingList.completed ? 'hammer' : 'done-all'}}"></ion-icon>
+                    </ion-button>
+                    <ion-button color="danger" (click)="removeItem(i)">X</ion-button>
+                </div>
+            </ion-item>
+        </ion-list>
+        <ng-template #elseBlock>Nie masz jeszcze listy zakupów</ng-template>
+    </div>
+
+</ion-content>
