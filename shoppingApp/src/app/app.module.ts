@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {ShoppingListsModule} from "./shopping-lists/shopping-lists.module";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import {ShoppingListsModule} from "./shopping-lists/shopping-lists.module";
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
       ShoppingListsModule
   ],

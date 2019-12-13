@@ -6,11 +6,26 @@
         <ion-title>
             Listy zakupów
         </ion-title>
+
+<!--        <ion-buttons slot="primary">-->
+<!--            <ion-button>-->
+<!--                <ion-icon slot="icon-only" name="options">-->
+<!--                </ion-icon>-->
+<!--            </ion-button>-->
+<!--        </ion-buttons>-->
+
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-    <ion-item>
+    <section>
+        <ion-button size="small" color="secondary" (click)="handleAddOption()">Dodaj</ion-button>
+        <ion-button size="small" color="secondary" (click)="handleSearchOption()">Szukaj</ion-button>
+        <ion-button size="small" color="secondary" (click)="handleFilterOption()">Filtruj</ion-button>
+        <ion-button size="small" color="secondary" (click)="handleSortOptions()">Sortuj</ion-button>
+    </section>
+
+    <ion-item *ngIf="options.add">
         <ion-input type="text" [(ngModel)]="listName" placeholder="Dodaj nową listę"></ion-input>
         <div item-end>
             <ion-button (click)="addNewShoppingList()">
@@ -19,10 +34,27 @@
         </div>
     </ion-item>
 
+    <ion-searchbar *ngIf="options.search"
+                   (ionChange)="onSearchTerm($event)">
+    </ion-searchbar>
+
+    <ion-select placeholder="Sortuj" [(ngModel)]="selectedSort" (ionChange)="sort()" *ngIf="options.sort">
+        <ion-select-option value="high">Rosnąco</ion-select-option>
+        <ion-select-option value="low">Malejąco</ion-select-option>
+    </ion-select>
+
+    <ion-select placeholder="Filtruj" [(ngModel)]="selectedFilter" (ionChange)="filter()" *ngIf="options.filter">
+        <ion-select-option value="all">Wszystkie</ion-select-option>
+        <ion-select-option value="completed">Zakończone</ion-select-option>
+        <ion-select-option value="inprogress">Niezakończone</ion-select-option>
+        <ion-select-option value="fav">Ulubione</ion-select-option>
+    </ion-select>
+
     <div class="ion-padding">
         <ion-list *ngIf="shoppingLists.length>0; else elseBlock">
             <ion-item *ngFor="let shoppingList of shoppingLists; let i = index">
-                <div [style.text-decoration-line]="shoppingList.completed ? 'line-through' : 'none'" (click)="navigateToSingleList(shoppingList)">{{shoppingList.name}}</div>
+                <div [style.text-decoration-line]="shoppingList.completed ? 'line-through' : 'none'"
+                     (click)="navigateToSingleList(shoppingList)">{{shoppingList.name}}</div>
                 <div class="item-note" slot="end">
                     <ion-button (click)="toggleComplete(i)">
                         <ion-icon name="{{shoppingList.completed ? 'hammer' : 'done-all'}}"></ion-icon>
