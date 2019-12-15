@@ -47,8 +47,10 @@ export class PdfComponent implements OnInit {
         this.storage.get(this.key).then((val) => {
             if (val) {
                 this.pdfData.shoppingListItems = val.map(a => a.name);
-                if(this.pdfData.shoppingListItems.length == 0){
-                  this.displayEmptyListAlert = true;
+                if (this.pdfData.shoppingListItems.length > 0) {
+                    this.displayEmptyListAlert = false;
+                } else {
+                    this.displayEmptyListAlert = true;
                 }
             }
         });
