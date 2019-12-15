@@ -1,30 +1,40 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      PDF
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            PDF
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+    <ion-list>
+        <ion-list-header>
+            Wybierz listę do eksportu
+        </ion-list-header>
+        <ion-select placeholder="Wybierz" [(ngModel)]="selectedShoppingList" (ionChange)="select()">
+            <ion-item *ngFor="let shoppingList of shoppingListsFromStorage; let i = index">
+                <ion-select-option value="{{shoppingList.name}}">{{shoppingList.name}}</ion-select-option>
+            </ion-item>
+        </ion-select>
+        <ion-text class="small-alert-text" *ngIf="displayEmptyListAlert">
+          Wybrana lista jest pusta
+        </ion-text>
+    </ion-list>
+    <ion-list-header>Dodaj parametry</ion-list-header>
+    <ion-item>
+        <ion-input [(ngModel)]="pdfData.nick" placeholder="Twój nick"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-textarea [(ngModel)]="pdfData.text" rows="6" placeholder="Opcjonalny tekst"></ion-textarea>
+    </ion-item>
 
-  <ion-item>
-    <ion-label stacked>From</ion-label>
-    <ion-input [(ngModel)]="letterObj.from"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>To</ion-label>
-    <ion-input [(ngModel)]="letterObj.to"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Text</ion-label>
-    <ion-textarea [(ngModel)]="letterObj.text" rows="10"></ion-textarea>
-  </ion-item>
-
-  <ion-button full (click)="createPdf()">Create PDF</ion-button>
-  <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Download PDF</ion-button>
+    <section class="ion-padding">
+        <ion-button expand="full" (click)="createPdf()">Generuj PDF</ion-button>
+        <ion-button expand="full" (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Pobierz PDF
+        </ion-button>
+    </section>
 
 </ion-content>

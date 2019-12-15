@@ -2,17 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Storage} from '@ionic/storage';
 
-interface ShoppingList {
-    name: string;
-    completed: boolean;
-    items: ItemsList[];
-}
-
-interface ItemsList {
-    name: string;
-    isChecked: boolean;
-}
-
 @Component({
     selector: 'app-shopping-lists',
     templateUrl: './shopping-lists.component.html',

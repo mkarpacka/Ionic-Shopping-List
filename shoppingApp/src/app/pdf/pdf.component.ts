@@ -1,87 +1,110 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-import { File } from '@ionic-native/file/ngx';
-import { FileOpener } from '@ionic-native/file-opener/ngx';
+import {File} from '@ionic-native/file/ngx';
+import {FileOpener} from '@ionic-native/file-opener/ngx';
 import {NavController, Platform} from "@ionic/angular";
+import {Router} from "@angular/router";
+import {Storage} from "@ionic/storage";
 
 @Component({
-  selector: 'app-pdf',
-  templateUrl: './pdf.component.html',
-  styleUrls: ['./pdf.component.scss'],
+    selector: 'app-pdf',
+    templateUrl: './pdf.component.html',
+    styleUrls: ['./pdf.component.scss'],
 })
 export class PdfComponent implements OnInit {
-  letterObj = {
-    to: '',
-    from: '',
-    text: ''
-  }
-
-  pdfObj = null;
-
-  constructor(public navCtrl: NavController, private plt: Platform, private file: File, private fileOpener: FileOpener) { }
-
-  ngOnInit() {}
-
-  createPdf() {
-    let docDefinition = {
-      content: [
-        { text: 'REMINDER', style: 'header' },
-        { text: new Date().toTimeString(), alignment: 'right' },
-
-        { text: 'From', style: 'subheader' },
-        { text: this.letterObj.from },
-
-        { text: 'To', style: 'subheader' },
-        this.letterObj.to,
-
-        { text: this.letterObj.text, style: 'story', margin: [0, 20, 0, 20] },
-
-        {
-          ul: [
-            'Bacon',
-            'Rips',
-            'BBQ',
-          ]
-        }
-      ],
-      styles: {
-        header: {
-          fontSize: 18,
-          bold: true,
-        },
-        subheader: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 15, 0, 0]
-        },
-        story: {
-          italic: true,
-          alignment: 'center',
-          width: '50%',
-        }
-      }
+    pdfData = {
+        header: '',
+        nick: '',
+        text: '',
+        shoppingListItems: []
     }
-    this.pdfObj = pdfMake.createPdf(docDefinition);
-  }
 
-  downloadPdf() {
-    if (this.plt.is('cordova')) {
-      this.pdfObj.getBuffer((buffer) => {
-        let blob = new Blob([buffer], { type: 'application/pdf' });
+    pdfObj = null;
+    selectedShoppingList: any;
+    shoppingListsFromStorage: ShoppingList[];
+    key: string = '';
+    displayEmptyListAlert = false;
 
-        // Save the PDF to the data Directory of our App
-        this.file.writeFile(this.file.dataDirectory, 'myletter.pdf', blob, { replace: true }).then(fileEntry => {
-          // Open the PDf with the correct OS tools
-          this.fileOpener.open(this.file.dataDirectory + 'myletter.pdf', 'application/pdf');
-        })
-      });
-    } else {
-      // On a browser simply use download!
-      this.pdfObj.download();
+    constructor(public navCtrl: NavController, private plt: Platform, private file: File, private fileOpener: FileOpener, private storage: Storage) {
     }
-  }
+
+    ngOnInit() {
+        this.readAllListsFromStorage();
+    }
+
+    readAllListsFromStorage() {
+        this.storage.get('shopping-lists').then((val) => {
+            if (val) this.shoppingListsFromStorage = val;
+        });
+    }
+
+    readSingleListItemsFromStorage() {
+        this.storage.get(this.key).then((val) => {
+            if (val) {
+                this.pdfData.shoppingListItems = val.map(a => a.name);
+                if(this.pdfData.shoppingListItems.length == 0){
+                  this.displayEmptyListAlert = true;
+                }
+            }
+        });
+    }
+
+    createPdf() {
+        let docDefinition = {
+            content: [
+                {text: this.pdfData.header, style: 'header'},
+                {text: new Date().toLocaleString("pl-PL"), alignment: 'right'},
+
+                {text: 'Stworzono przez: ', style: 'subheader'},
+                {text: this.pdfData.nick},
+
+                {text: 'Lista zakupów: ', margin: [0, 20, 0, 20]},
+                {
+                    ul: this.pdfData.shoppingListItems, margin: [40, 0, 40, 0]
+                },
+
+                {text: this.pdfData.text, style: 'additionalText', margin: [0, 20, 0, 20]}
+            ],
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                },
+                subheader: {
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 15, 0, 0]
+                },
+                additionalText: {
+                    italic: true,
+                    width: '50%',
+                }
+            }
+        };
+        this.pdfObj = pdfMake.createPdf(docDefinition);
+    }
+
+    downloadPdf() {
+        if (this.plt.is('cordova')) {
+            this.pdfObj.getBuffer((buffer) => {
+                let blob = new Blob([buffer], {type: 'application/pdf'});
+                this.file.writeFile(this.file.dataDirectory, 'shoppingList.pdf', blob, {replace: true}).then(fileEntry => {
+                    this.fileOpener.open(this.file.dataDirectory + 'shoppingList.pdf', 'application/pdf');
+                })
+            });
+        } else {
+            this.pdfObj.download();
+        }
+    }
+
+    select() {
+        this.key = this.selectedShoppingList.replace(/ /g, "");
+        this.pdfData.header = this.selectedShoppingList;
+        this.readSingleListItemsFromStorage();
+    }
 }

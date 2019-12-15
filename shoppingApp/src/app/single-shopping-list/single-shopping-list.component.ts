@@ -2,17 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Storage} from "@ionic/storage";
 
-interface ShoppingList {
-    name: string;
-    completed: boolean;
-    items: ItemsList [];
-}
-
-interface ItemsList {
-    name: string;
-    isChecked: boolean;
-}
-
 @Component({
     selector: 'app-single-shopping-list',
     templateUrl: './single-shopping-list.component.html',
@@ -50,6 +39,7 @@ export class SingleShoppingListComponent implements OnInit {
 
     saveToStorage() {
         this.storage.set(this.key, this.items);
+
     }
 
     readFromStorage() {
