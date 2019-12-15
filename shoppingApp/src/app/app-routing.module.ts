@@ -19,6 +19,14 @@ const routes: Routes = [
     path: 'shopping-lists',
     loadChildren: () => import('./shopping-lists/shopping-lists.module').then(m=>m.ShoppingListsModule)
   },
+  {
+    path: 'fake-shopping',
+    loadChildren: () => import('./fake-shopping/fake-shopping.module').then(m=>m.FakeShoppingModule)
+  },
+  {
+    path: 'pdf',
+    loadChildren: () => import('./pdf/pdf.module').then(m=>m.PdfModule)
+  },
 ];
 
 @NgModule({

@@ -5,6 +5,12 @@ import {Storage} from '@ionic/storage';
 interface ShoppingList {
     name: string;
     completed: boolean;
+    items: ItemsList[];
+}
+
+interface ItemsList {
+    name: string;
+    isChecked: boolean;
 }
 
 @Component({
@@ -17,7 +23,6 @@ export class ShoppingListsComponent implements OnInit {
 
     shoppingLists: ShoppingList[] = [];
     listName: string = "";
-    isCompleted: boolean = false;
     options = {
         search: false,
         add: false,
@@ -76,7 +81,7 @@ export class ShoppingListsComponent implements OnInit {
 
     addNewShoppingList() {
         if (this.listName.length > 0) {
-            let shoppingList = {name: this.listName, completed: false};
+            let shoppingList = {name: this.listName, completed: false, items: []};
             this.shoppingLists.push(shoppingList);
             this.listName = '';
             this.saveToStorage();

@@ -50,7 +50,7 @@
         <ion-select-option value="fav">Ulubione</ion-select-option>
     </ion-select>
 
-    <div class="ion-padding">
+    <div>
         <ion-list *ngIf="shoppingLists.length>0; else elseBlock">
             <ion-item *ngFor="let shoppingList of shoppingLists; let i = index">
                 <div [style.text-decoration-line]="shoppingList.completed ? 'line-through' : 'none'"

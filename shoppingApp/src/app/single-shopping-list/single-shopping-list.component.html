@@ -1,17 +1,35 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      {{singleList.name}}
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            {{singleList.name}}
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-<p>
-  single-shopping-list works!
-  {{singleList.name}}
-</p>
+    <ion-item *ngIf="!singleList.completed; else elseBlock">
+        <ion-input type="text" [(ngModel)]="itemToAdd" placeholder="Dodaj nowy element"></ion-input>
+        <div item-end>
+            <ion-button (click)="addNewItem()">
+                Dodaj
+            </ion-button>
+        </div>
+    </ion-item>
+    <ng-template #elseBlock>Lista zakończona</ng-template>
+
+    <ion-list>
+        <ion-list-header>Twoje zakupy {{finishedItemsCount}}/{{items.length}}
+        </ion-list-header>
+        <ion-item *ngFor="let item of items; let i = index">
+            <ion-checkbox slot="start" [(ngModel)]="item.isChecked" (ionChange)="handleChecked(item)"></ion-checkbox>
+            <div>{{item.name}}</div>
+            <div class="delete-button" slot="end" >
+                <ion-button color="danger" (click)="removeItem(i)">X</ion-button>
+            </div>
+        </ion-item>
+    </ion-list>
+
 </ion-content>

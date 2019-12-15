@@ -25,7 +25,17 @@ export class AppComponent {
       title: 'Listy zakupów',
       url: '/shopping-lists',
       icon: 'basket'
-    }
+    },
+    {
+      title: 'Fake',
+      url: '/fake-shopping',
+      icon: 'cube'
+    },
+    {
+      title: 'PDF',
+      url: '/pdf',
+      icon: 'document'
+    },
   ];
 
   constructor(
