@@ -20,7 +20,7 @@ export class ShoppingListsComponent implements OnInit {
     };
     selectedSort: any;
     selectedFilter: any;
-
+    checkIfExists: boolean;
 
     constructor(private route: ActivatedRoute,
                 private router: Router, private storage: Storage) {
@@ -69,7 +69,8 @@ export class ShoppingListsComponent implements OnInit {
     }
 
     addNewShoppingList() {
-        if (this.listName.length > 0) {
+        this.checkIfExists = this.shoppingLists.map(a=>a.name).indexOf(this.listName) > -1;
+        if (this.listName.length > 0 && !this.checkIfExists) {
             let shoppingList = {name: this.listName, completed: false, items: []};
             this.shoppingLists.push(shoppingList);
             this.listName = '';
