@@ -31,6 +31,11 @@ export class AppComponent {
       url: '/pdf',
       icon: 'document'
     },
+    {
+      title: 'Zdjęcia paragonów',
+      url: '/image',
+      icon: 'image'
+    },
   ];
 
   constructor(

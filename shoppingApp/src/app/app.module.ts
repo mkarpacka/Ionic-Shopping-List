@@ -14,6 +14,9 @@ import {IonicStorageModule} from "@ionic/storage";
 import {File} from '@ionic-native/file/ngx';
 import {FileOpener} from '@ionic-native/file-opener/ngx';
 
+import { Camera } from '@ionic-native/camera/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
@@ -29,7 +32,9 @@ import {FileOpener} from '@ionic-native/file-opener/ngx';
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         File,
-        FileOpener
+        FileOpener,
+        Camera,
+        WebView
     ],
     bootstrap: [AppComponent]
 })

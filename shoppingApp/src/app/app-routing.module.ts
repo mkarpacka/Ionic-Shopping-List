@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'pdf',
     loadChildren: () => import('./pdf/pdf.module').then(m=>m.PdfModule)
   },
+  {
+    path: 'image',
+    loadChildren: () => import('./image/image.module').then(m=>m.ImageModule)
+  },
 ];
 
 @NgModule({
