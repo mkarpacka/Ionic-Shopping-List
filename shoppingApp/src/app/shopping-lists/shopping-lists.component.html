@@ -35,7 +35,7 @@
             </div>
         </ion-item>
         <ion-text color="danger" *ngIf="checkIfExists">
-            Już istnieje lista o takiej nazwie
+            Lista o podanej nazwie istnieje
         </ion-text>
     </div>
 
@@ -44,15 +44,16 @@
     </ion-searchbar>
 
     <ion-select placeholder="Sortuj" [(ngModel)]="selectedSort" (ionChange)="sort()" *ngIf="options.sort">
+        <ion-select-option value="def">Domyślnie</ion-select-option>
         <ion-select-option value="high">Rosnąco</ion-select-option>
         <ion-select-option value="low">Malejąco</ion-select-option>
+        <ion-select-option value="rand">Losowo</ion-select-option>
     </ion-select>
 
     <ion-select placeholder="Filtruj" [(ngModel)]="selectedFilter" (ionChange)="filter()" *ngIf="options.filter">
         <ion-select-option value="all">Wszystkie</ion-select-option>
         <ion-select-option value="completed">Zakończone</ion-select-option>
         <ion-select-option value="inprogress">Niezakończone</ion-select-option>
-        <ion-select-option value="fav">Ulubione</ion-select-option>
     </ion-select>
 
     <div>

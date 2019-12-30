@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
+import * as faker from "faker";
 
 @Component({
     selector: 'app-single-shopping-list',
@@ -15,8 +16,18 @@ export class SingleShoppingListComponent implements OnInit {
     finishedItemsCount;
     key: string;
     editMode: any;
+    options = {
+        search: false,
+        add: false,
+        filter: false,
+        sort: false,
+        generate: false
+    };
+    selectedSort: any;
+    selectedFilter: any;
 
-    constructor(private route: ActivatedRoute, private storage: Storage) {
+    constructor(private route: ActivatedRoute,
+                private router: Router, private storage: Storage) {
     }
 
     ngOnInit() {
@@ -25,6 +36,46 @@ export class SingleShoppingListComponent implements OnInit {
         this.key = this.singleList.name.replace(/ /g, "");
         this.editMode = true;
         this.readFromStorage();
+    }
+
+    handleAddOption() {
+        this.options.add = true;
+        this.options.search = false;
+        this.options.filter = false;
+        this.options.sort = false;
+        this.options.generate = false;
+    }
+
+    handleSearchOption() {
+        this.options.add = false;
+        this.options.search = true;
+        this.options.filter = false;
+        this.options.sort = false;
+        this.options.generate = false;
+    }
+
+    handleFilterOption() {
+        this.options.add = false;
+        this.options.search = false;
+        this.options.filter = true;
+        this.options.sort = false;
+        this.options.generate = false;
+    }
+
+    handleSortOptions() {
+        this.options.add = false;
+        this.options.search = false;
+        this.options.filter = false;
+        this.options.sort = true;
+        this.options.generate = false;
+    }
+
+    handleGenerate() {
+        this.options.add = false;
+        this.options.search = false;
+        this.options.filter = false;
+        this.options.sort = false;
+        this.options.generate = true;
     }
 
     addNewItem() {
@@ -64,4 +115,74 @@ export class SingleShoppingListComponent implements OnInit {
         this.saveToStorage();
     }
 
+    onSearchTerm($event: CustomEvent) {
+        const val = $event.detail.value;
+        if (val && val.trim() !== '') {
+            this.items = this.items.filter(term => {
+                return term.name.toLowerCase().indexOf(val.trim().toLowerCase()) > -1;
+            });
+        } else {
+            this.readFromStorage();
+        }
+    }
+
+    sort() {
+        if(this.selectedSort == 'def'){
+            this.readFromStorage()
+        }
+        if(this.selectedSort == 'high'){
+            this.sortAscending();
+        }
+        if(this.selectedSort == 'low'){
+            this.sortDescending();
+        }
+        if(this.selectedSort == 'rand'){
+            this.shuffleArray();
+        }
+    }
+
+     shuffleArray() {
+        this.items = this.items
+            .map((a) => ({sort: Math.random(), value: a}))
+            .sort((a, b) => a.sort - b.sort)
+            .map((a) => a.value)
+    }
+
+    filter() {
+        if(this.selectedFilter == 'all'){
+            this.readFromStorage()
+        }
+        if(this.selectedFilter == 'completed'){
+            this.items = this.items.filter(term => {
+                return term.isChecked
+            });
+        }
+        if(this.selectedFilter == 'inprogress'){
+            this.items = this.items.filter(term => {
+                return !term.isChecked
+            });
+        }
+    }
+
+    sortAscending() {
+        this.items.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    sortDescending() {
+        const ascending = this.items.sort((a, b) => a.name.localeCompare(b.name));
+        ascending.sort().reverse();
+    }
+
+    generateFakeData() {
+        for (let i = 0; i < 50; i++) {
+            let fakeName = faker.fake("{{commerce.product}}")
+            let fakeItem = {name: fakeName, isChecked: false};
+            this.items.push(fakeItem);
+        }
+    }
+
+    navigateToEditList() {
+        //przeslac tez itemy, przy zmianie usunac poprzednie i zapisac z nowym kluczem.
+        this.router.navigate(['/edit-shoppinglist/' + JSON.stringify(this.singleList)]);
+    }
 }

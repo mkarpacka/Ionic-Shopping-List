@@ -26,10 +26,9 @@ export class ImageComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.displayImage = this.win.Ionic.WebView.convertFileSrc('file://data/user/0/io.ionic.starter.files/1576678019576.jpg');
-        // if (this.savedImagesNames.length > 0) {
-        //     this.readFromStorage();
-        // }
+        if (this.savedImagesNames.length > 0) {
+            this.readFromStorage();
+        }
     }
 
     takeSnap() {
@@ -63,10 +62,11 @@ export class ImageComponent implements OnInit {
         this.storage.set('image-urls', this.savedImagesNames);
     }
 
-    // readFromStorage() {
-    //     this.storage.get('image-urls').then((val) => {
-    //         if (val) this.savedImagesNames = val;
-    //     }).catch((err) => console.log(err));
-    // }
+    readFromStorage() {
+        this.storage.get('image-urls').then((val) => {
+            if (val) this.savedImagesNames = val;
+            console.log(val);
+        }).catch((err) => console.log(err));
+    }
 
 }

@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Edytuj: {{singleList.name}}
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="newName" placeholder="Nowa nazwa listy"></ion-input>
+    <div item-end>
+      <ion-button (click)="editName()">
+        Dodaj
+      </ion-button>
+    </div>
+  </ion-item>
+</ion-content>

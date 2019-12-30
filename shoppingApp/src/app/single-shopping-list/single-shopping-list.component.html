@@ -6,19 +6,51 @@
         <ion-title>
             {{singleList.name}}
         </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="navigateToEditList()">
+                <ion-icon name="settings"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-    <ion-item *ngIf="!singleList.completed; else elseBlock">
-        <ion-input type="text" [(ngModel)]="itemToAdd" placeholder="Dodaj nowy element"></ion-input>
-        <div item-end>
-            <ion-button (click)="addNewItem()">
-                Dodaj
-            </ion-button>
-        </div>
-    </ion-item>
+    <section>
+        <ion-button size="small" color="secondary" (click)="handleAddOption()">Dodaj</ion-button>
+        <ion-button size="small" color="secondary" (click)="handleSearchOption()">Szukaj</ion-button>
+        <ion-button size="small" color="secondary" (click)="handleFilterOption()">Filtruj</ion-button>
+        <ion-button size="small" color="secondary" (click)="handleSortOptions()">Sortuj</ion-button>
+        <ion-button size="small" color="secondary" (click)="handleGenerate()">Generuj</ion-button>
+    </section>
+    <div *ngIf="options.add">
+        <ion-item *ngIf="!singleList.completed; else elseBlock">
+            <ion-input type="text" [(ngModel)]="itemToAdd" placeholder="Dodaj nowy element"></ion-input>
+            <div item-end>
+                <ion-button (click)="addNewItem()">
+                    Dodaj
+                </ion-button>
+            </div>
+        </ion-item>
+    </div>
     <ng-template #elseBlock>Lista zakończona</ng-template>
+
+    <ion-searchbar *ngIf="options.search"
+                   (ionChange)="onSearchTerm($event)">
+    </ion-searchbar>
+
+    <ion-select placeholder="Sortuj" [(ngModel)]="selectedSort" (ionChange)="sort()" *ngIf="options.sort">
+        <ion-select-option value="def">Domyślnie</ion-select-option>
+        <ion-select-option value="high">Rosnąco</ion-select-option>
+        <ion-select-option value="low">Malejąco</ion-select-option>
+        <ion-select-option value="rand">Losowo</ion-select-option>
+    </ion-select>
+
+    <ion-select placeholder="Filtruj" [(ngModel)]="selectedFilter" (ionChange)="filter()" *ngIf="options.filter">
+        <ion-select-option value="all">Wszystkie</ion-select-option>
+        <ion-select-option value="completed">Zakończone</ion-select-option>
+        <ion-select-option value="inprogress">Niezakończone</ion-select-option>
+    </ion-select>
 
     <ion-list>
         <ion-list-header>Twoje zakupy {{finishedItemsCount}}/{{items.length}}
@@ -26,10 +58,12 @@
         <ion-item *ngFor="let item of items; let i = index">
             <ion-checkbox slot="start" [(ngModel)]="item.isChecked" (ionChange)="handleChecked(item)"></ion-checkbox>
             <div>{{item.name}}</div>
-            <div class="delete-button" slot="end" >
+            <div class="delete-button" slot="end">
                 <ion-button color="danger" (click)="removeItem(i)">X</ion-button>
             </div>
         </ion-item>
     </ion-list>
+
+    <ion-button expand="full" color="light" *ngIf="options.generate" (click)="generateFakeData()">Generuj dane</ion-button>
 
 </ion-content>

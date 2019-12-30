@@ -5,6 +5,7 @@ import {ShoppingListsComponent} from "./shopping-lists.component";
 import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {SingleShoppingListComponent} from "../single-shopping-list/single-shopping-list.component";
+import {EditShoppinglistComponent} from "../edit-shoppinglist/edit-shoppinglist.component";
 
 const routes: Routes = [
   {
@@ -14,11 +15,15 @@ const routes: Routes = [
   {
     path: 'single-list/:shoppinglist',
     component: SingleShoppingListComponent
+  },
+  {
+    path: 'edit-shoppinglist/:shoppinglist',
+    component: EditShoppinglistComponent
   }
 ];
 
 @NgModule({
-  declarations: [ShoppingListsComponent, SingleShoppingListComponent],
+  declarations: [ShoppingListsComponent, SingleShoppingListComponent, EditShoppinglistComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(

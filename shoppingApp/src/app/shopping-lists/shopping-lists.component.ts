@@ -58,6 +58,13 @@ export class ShoppingListsComponent implements OnInit {
         this.options.sort = true;
     }
 
+    handleGenerate() {
+        this.options.add = false;
+        this.options.search = false;
+        this.options.filter = false;
+        this.options.sort = false;
+    }
+
     saveToStorage() {
         this.storage.set('shopping-lists', this.shoppingLists);
     }
@@ -136,9 +143,7 @@ export class ShoppingListsComponent implements OnInit {
                 return !term.completed
             });
         }
-        if(this.selectedFilter == 'fav'){
-            console.log('ulubione');
-        }
     }
+
 
 }
