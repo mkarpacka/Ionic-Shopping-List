@@ -16,12 +16,22 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <section>
-        <ion-button size="small" color="secondary" (click)="handleAddOption()">Dodaj</ion-button>
-        <ion-button size="small" color="secondary" (click)="handleSearchOption()">Szukaj</ion-button>
-        <ion-button size="small" color="secondary" (click)="handleFilterOption()">Filtruj</ion-button>
-        <ion-button size="small" color="secondary" (click)="handleSortOptions()">Sortuj</ion-button>
-        <ion-button size="small" color="secondary" (click)="handleGenerate()">Generuj</ion-button>
+    <section class="center2">
+        <ion-button size="small" color="secondary" class="center" (click)="handleAddOption()">
+            <ion-icon name="add"></ion-icon>
+        </ion-button>
+        <ion-button size="small" color="secondary" class="center" (click)="handleSearchOption()">
+            <ion-icon name="search"></ion-icon>
+        </ion-button>
+        <ion-button size="small" color="secondary" class="center" (click)="handleFilterOption()">
+            <ion-icon name="funnel"></ion-icon>
+        </ion-button>
+        <ion-button size="small" color="secondary" class="center" (click)="handleSortOptions()">
+            <ion-icon name="swap"></ion-icon>
+        </ion-button>
+        <ion-button size="small" color="secondary" class="center" (click)="handleGenerate()">
+            <ion-icon name="cloud-download"></ion-icon>
+        </ion-button>
     </section>
     <div *ngIf="options.add">
         <ion-item *ngIf="!singleList.completed; else elseBlock">
@@ -64,6 +74,7 @@
         </ion-item>
     </ion-list>
 
-    <ion-button expand="full" color="light" *ngIf="options.generate" (click)="generateFakeData()">Generuj dane</ion-button>
+    <ion-button expand="full" color="light" *ngIf="options.generate" (click)="generateFakeData()">Generuj dane
+    </ion-button>
 
 </ion-content>

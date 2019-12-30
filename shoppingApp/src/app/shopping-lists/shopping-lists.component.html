@@ -6,23 +6,23 @@
         <ion-title>
             Listy zakupów
         </ion-title>
-
-        <!--        <ion-buttons slot="primary">-->
-        <!--            <ion-button>-->
-        <!--                <ion-icon slot="icon-only" name="options">-->
-        <!--                </ion-icon>-->
-        <!--            </ion-button>-->
-        <!--        </ion-buttons>-->
-
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-    <section>
-        <ion-button size="small" color="secondary" (click)="handleAddOption()">Dodaj</ion-button>
-        <ion-button size="small" color="secondary" (click)="handleSearchOption()">Szukaj</ion-button>
-        <ion-button size="small" color="secondary" (click)="handleFilterOption()">Filtruj</ion-button>
-        <ion-button size="small" color="secondary" (click)="handleSortOptions()">Sortuj</ion-button>
+    <section class="center2">
+        <ion-button size="small" color="secondary" class="center" (click)="handleAddOption()">
+            <ion-icon name="add"></ion-icon>
+        </ion-button>
+        <ion-button size="small" color="secondary" class="center" (click)="handleSearchOption()">
+            <ion-icon name="search"></ion-icon>
+        </ion-button>
+        <ion-button size="small" color="secondary" class="center" (click)="handleFilterOption()">
+            <ion-icon name="funnel"></ion-icon>
+        </ion-button>
+        <ion-button size="small" color="secondary" class="center" (click)="handleSortOptions()">
+            <ion-icon name="swap"></ion-icon>
+        </ion-button>
     </section>
 
     <div *ngIf="options.add">
