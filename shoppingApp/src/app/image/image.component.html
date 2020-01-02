@@ -4,21 +4,29 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>
-            Camera
+            Zdjęcia paragonów
         </ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
 
-    <ion-button (click)="takeSnap()">
+    <ion-button expand="block" (click)="takeSnap()">
         Dodaj zdjęcie
     </ion-button>
-<!--    <div *ngIf="savedImagesNames">-->
-<!--        <div *ngFor="let savedImage of savedImagesNames">-->
-<!--            <ion-img src="{{ savedImage }}"></ion-img>-->
-<!--        </div>-->
-<!--    </div>-->
-    <img [src]="displayImage" />
+
+    <ion-list>
+        <ion-list-header>Ostatnio dodane zdjęcie
+        </ion-list-header>
+        <img [src]="displayImage" />
+        <ion-list-header>Pozostałe zdjęcia
+        </ion-list-header>
+        <div *ngIf="savedImages">
+            <div *ngFor="let savedImage of savedImages">
+                <img [src]="savedImage" />
+            </div>
+        </div>
+
+    </ion-list>
 
 </ion-content>
 

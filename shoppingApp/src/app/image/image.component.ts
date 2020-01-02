@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
 import {File} from '@ionic-native/file/ngx';
 import {Storage} from "@ionic/storage";
-import { WebView } from '@ionic-native/ionic-webview/ngx';
+import {WebView} from '@ionic-native/ionic-webview/ngx';
 
 @Component({
     selector: 'app-image',
@@ -16,20 +16,20 @@ export class ImageComponent implements OnInit {
         quality: 100,
         destinationType: this.camera.DestinationType.FILE_URI,
         encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE
+        mediaType: this.camera.MediaType.PICTURE,
     };
     displayImage: any;
     private win: any = window;
     savedImagesNames: string[] = [];
+    savedImages: any[] = [];
 
     constructor(private camera: Camera, private file: File, private storage: Storage, private webview: WebView) {
     }
 
     ngOnInit() {
-        if (this.savedImagesNames.length > 0) {
-            this.readFromStorage();
-        }
+        this.readFromStorage();
     }
+
 
     takeSnap() {
         this.camera.getPicture(this.cameraOptions).then((imageData) => {
@@ -46,14 +46,10 @@ export class ImageComponent implements OnInit {
 
     async fun(tempBaseFilesystemPath, tempFilename,
               newBaseFilesystemPath) {
-        console.log(tempBaseFilesystemPath);
-        console.log(tempFilename);
-        console.log(newBaseFilesystemPath);
         const ble = await this.file.copyFile(tempBaseFilesystemPath, tempFilename,
             newBaseFilesystemPath, tempFilename);
-        console.log(ble);
         const storedPhoto = newBaseFilesystemPath + tempFilename;
-        this.displayImage = this.webview.convertFileSrc(storedPhoto);
+        this.displayImage = this.win.Ionic.WebView.convertFileSrc(storedPhoto);
         this.savedImagesNames.push(storedPhoto);
         this.saveToStorage();
     }
@@ -64,7 +60,16 @@ export class ImageComponent implements OnInit {
 
     readFromStorage() {
         this.storage.get('image-urls').then((val) => {
-            if (val) this.savedImagesNames = val;
+            if (val) {
+                this.savedImages = [];
+                this.savedImagesNames = val;
+                console.log('names', this.savedImagesNames);
+                this.displayImage = this.win.Ionic.WebView.convertFileSrc(this.savedImagesNames[this.savedImagesNames.length-1]);
+                for (let i = 0; i < this.savedImagesNames.length; i++) {
+                    this.savedImages.push(this.win.Ionic.WebView.convertFileSrc(this.savedImagesNames[i]));
+                    console.log('images', this.savedImages);
+                }
+            }
             console.log(val);
         }).catch((err) => console.log(err));
     }

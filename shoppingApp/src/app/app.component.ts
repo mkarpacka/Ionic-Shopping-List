@@ -22,7 +22,7 @@ export class AppComponent {
       icon: 'basket'
     },
     {
-      title: 'PDF',
+      title: 'Wygeneruj PDF',
       url: '/pdf',
       icon: 'document'
     },
