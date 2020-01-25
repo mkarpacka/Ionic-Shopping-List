@@ -127,6 +127,7 @@ export class SingleShoppingListComponent implements OnInit {
     }
 
     sort() {
+        var start = new Date().getTime();
         if(this.selectedSort == 'def'){
             this.readFromStorage()
         }
@@ -139,13 +140,20 @@ export class SingleShoppingListComponent implements OnInit {
         if(this.selectedSort == 'rand'){
             this.shuffleArray();
         }
+        var end = new Date().getTime();
+        var time = end - start;
+        console.log('Execution time : ' + time);
     }
 
      shuffleArray() {
+         var start = new Date().getTime();
         this.items = this.items
             .map((a) => ({sort: Math.random(), value: a}))
             .sort((a, b) => a.sort - b.sort)
             .map((a) => a.value)
+         var end = new Date().getTime();
+         var time = end - start;
+         console.log('Execution time shuffle: ' + time);
     }
 
     filter() {
@@ -174,11 +182,12 @@ export class SingleShoppingListComponent implements OnInit {
     }
 
     generateFakeData() {
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 800; i++) {
             let fakeName = faker.fake("{{commerce.product}}")
             let fakeItem = {name: fakeName, isChecked: false};
             this.items.push(fakeItem);
         }
+     this.saveToStorage();
     }
 
     navigateToEditList() {

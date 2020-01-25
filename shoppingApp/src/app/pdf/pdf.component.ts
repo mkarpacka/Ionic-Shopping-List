@@ -57,6 +57,7 @@ export class PdfComponent implements OnInit {
     }
 
     createPdf() {
+        var t0 = performance.now();
         let docDefinition = {
             content: [
                 {text: this.pdfData.header, style: 'header'},
@@ -89,6 +90,9 @@ export class PdfComponent implements OnInit {
             }
         };
         this.pdfObj = pdfMake.createPdf(docDefinition);
+        this.downloadPdf();
+        var t1 = performance.now();
+        console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
     }
 
     downloadPdf() {
